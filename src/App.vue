@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <HeaderMenu />
+    <router-view />
   </div>
 </template>
+<script>
+import HeaderMenu from "@/components/Header-menu";
+export default {
+  components: {HeaderMenu}
+}
+
+</script>
 
 <style lang="scss">
 #app {
@@ -18,7 +22,7 @@
 }
 
 nav {
-  padding: 30px;
+  padding: 10px;
 
   a {
     font-weight: bold;
