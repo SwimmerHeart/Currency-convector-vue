@@ -23,6 +23,8 @@ export default {
       paramsFromText: null,
       valutes: {},
       selected2: [],
+      elem1: '',
+      elem2: '',
       result: null,
       countries: ['RUB'],
     }
@@ -32,17 +34,20 @@ export default {
       this.amount = parseInt(text.match(/\d+/))
       this.paramsFromText = text.split(this.amount).join('').split(' ')
       this.selected2.length = 0
+      console.log(this.paramsFromText)
       this.countries.forEach(item=>{
-        if(this.paramsFromText.includes(item)){
-          // this.selected2.length !== 0 ? this.selected2[0] = item : this.selected2[1] = item
-          if(this.selected2.length){
-            this.selected2[0] = item
-          }
-          else {
-            this.selected2[1] = item
-          }
+        if(this.paramsFromText.indexOf(item) !== -1){
+          this.elem1 = this.paramsFromText.indexOf(item)
+          return true
         }
+        if(this.paramsFromText.lastIndexOf(item) !== -1){
+          this.elem2 = this.paramsFromText.lastIndexOf(item)
+          return true
+        }
+          // this.selected2.length !== 0 ? this.selected2[0] = item : this.selected2[1] = item
       })
+      console.log('this.elem1', this.elem1)
+      console.log('this.elem2', this.elem2)
 
       // Дефолтные значения / RUB
       let defaultValute = {
