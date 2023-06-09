@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column is-centered">
     <table class="table is-hoverable is-bordered  m-auto">
       <tbody>
       <tr class="has-background-success-light">
@@ -36,9 +36,5 @@ export default {
 
 
 <style scoped lang="scss">
-  .table{
-    max-width: 1200px;
-    width: 100%;
-  }
 
 </style>

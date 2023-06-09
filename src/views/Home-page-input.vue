@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="content is-normal is-flex is-justify-content-center">
-      <div class="box currency__box">
+    <div class="columns is-centered">
+      <div class="column is-5">
         <FormBox @add-text="convector"
         />
         <div class="is-flex is-justify-content-start">
@@ -88,8 +88,4 @@ export default {
 </script>
 <style scoped>
 
-.currency__box {
-  max-width: 800px;
-  width: 100%;
-}
 </style>
