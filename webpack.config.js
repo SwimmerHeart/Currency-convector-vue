@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {VueLoaderPlugin} = require("vue-loader");
+const {VueLoaderPlugin} = require("vue-loader")
+const webpack = require('webpack')
 
 module.exports = {
     mode: 'development',
@@ -12,12 +13,13 @@ module.exports = {
     },
     devServer: {
         open: true,
-        port: 8081,
+        port: 8080,
         static: './dist',
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
+            process: "process/browser"
         },
         extensions: ['.js', '.vue', '.json']
     },
@@ -82,6 +84,9 @@ module.exports = {
             template: path.resolve(__dirname, "public", "index.html"),
             favicon: "./public/favicon.ico",
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
     ],
 }
