@@ -1,9 +1,8 @@
 <template>
   <div class="control">
-    <div class="select switcher__box">
+    <div class="select">
       <select @change="convert"
               v-model="selected[0]"
-              class="switcher__box-select"
       >
         <option v-for="option in countries" :value="option" v-bind:key="option">
           {{ option }}
@@ -33,11 +32,5 @@ export default {
 
 
 <style scoped lang="scss">
-.switcher__box{
-  width: 300px;
-}
-.switcher__box-select{
-  width: 100%;
-}
 
 </style>

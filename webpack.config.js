@@ -1,10 +1,9 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {VueLoaderPlugin} = require("vue-loader")
-const webpack = require('webpack')
+
 
 module.exports = {
-    mode: 'development',
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -15,11 +14,11 @@ module.exports = {
         open: true,
         port: 8080,
         static: './dist',
+        historyApiFallback: true,
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            process: "process/browser"
         },
         extensions: ['.js', '.vue', '.json']
     },
@@ -64,7 +63,7 @@ module.exports = {
                 test: /\.(eot|ttf|woff|woff2)(\?\S*)?$/,
                 loader: "file-loader",
                 options: {
-                    name: "[name][contenthash:4].[ext]",
+                    name: "[name].[ext]",
                 },
             },
             {
@@ -80,13 +79,10 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Development',
+            title: 'Development1',
             template: path.resolve(__dirname, "public", "index.html"),
-            favicon: "./public/favicon.ico",
+            favicon: "./public/Vue.png",
         }),
         new VueLoaderPlugin(),
-        new webpack.ProvidePlugin({
-            process: 'process/browser',
-        }),
     ],
 }

@@ -2,26 +2,22 @@
   <form class="is-flex mb-2"
         @submit.prevent="onSubmit"
   >
-    <input class="input is-primary mr-1"
-           type="text"
-           placeholder="Введите строку типа '15 usd in rub' для конвертирования"
-           v-model="textInput"
-    >
-    <button class="button is-primary"
-            type="submit"
-    >Перевести
-    </button>
+    <v-input v-model="textInput"/>
+    <v-button>Перевести</v-button>
   </form>
 </template>
 
-
 <script>
+import VButton from "@/components/VButton"
+import VInput from "@/components/input/VInput"
+
 export default {
   name: 'form-box',
-  components: {},
-  props: {
-
+  components: {
+    VButton,
+    VInput
   },
+  props: {},
   data(){
     return {
       textInput: ''
@@ -29,11 +25,11 @@ export default {
   },
   methods: {
     onSubmit() {
-        if(this.textInput.trim()){
-          const text =this.textInput.trim().toUpperCase()
-          this.$emit('add-text', text)
-        }
-      this.textInput = ''
+      if (this.textInput.trim()) {
+        const text = this.textInput.trim().toUpperCase()
+        this.$emit('add-text', text)
+        this.textInput = ''
+      }
     },
   }
 }

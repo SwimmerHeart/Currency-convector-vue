@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div class="columns is-centered">
-      <div class="column is-5">
-        <FormBox @add-text="convector"
-        />
-        <div class="is-flex is-justify-content-start">
-          <p>Результат конвертации: ({{this.amount}} {{this.selected2[0]}} - {{this.selected2[1]}}) {{this.result}}</p>
+      <div class="column is-6">
+        <FormBox @add-text="convector" />
+        <div class="columns">
+          <p class="column has-text-left">
+            Результат конвертации: ({{this.amount}} {{this.selected2[0]}} - {{this.selected2[1]}}) {{this.result}}
+          </p>
         </div>
       </div>
     </div>
@@ -16,6 +17,7 @@
 import FormBox from "@/components/Form-box";
 export default {
   name: 'Home-page',
+  components: {FormBox},
   data() {
     return {
       text: '',
@@ -82,8 +84,7 @@ export default {
           }
         })
         .catch(err => console.log(err))
-  },
-  components: {FormBox}
+  }
 }
 </script>
 <style scoped>

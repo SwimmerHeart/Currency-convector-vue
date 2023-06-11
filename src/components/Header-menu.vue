@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar has-background-info-light" role="navigation" aria-label="main navigation">
+  <nav class="navbar has-background-info-light mb-5" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <h1 class="navbar-item header__title is-size-4">
         Конвектор валют на VUE
@@ -26,17 +26,6 @@
   </nav>
 </template>
 
-  <!--<script>-->
-  <!--export default {-->
-  <!--  name: 'HeaderMenu',-->
-  <!--  components: {-->
-  <!--    HeaderMenu,-->
-  <!--  }-->
-  <!--}-->
-  <!--</script>-->
 <style scoped>
-.navbar{
-  margin-bottom: 2rem;
-}
 
 </style>

@@ -7,7 +7,7 @@
                 v-model="selected[0]"
                 class="switcher__box-select"
         >
-          <option v-for="option in countries" :value="option.Name" v-bind:key="option.ID">
+          <option v-for="option in countries" :value="option.Name" :key="option.ID">
             {{ option.Name}}
           </option>
         </select>
@@ -70,7 +70,6 @@ export default {
         .then(data => {
           this.valutes = Object.values(data.Valute)
           this.time = data.Date.slice(0,-15).split('-').reverse().join('.')
-
           for (let code of this.valutes) {
             this.countries.push(code)
           }
