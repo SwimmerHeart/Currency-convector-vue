@@ -2,16 +2,24 @@
   <div class="container">
     <div class="select__box is-flex is-align-items-center is-justify-content-center mb-3">
       <h3 class="select__title mr-3">Моя валюта</h3>
-      <div class="select switcher__box mr-3">
-        <select @change="convertOneUnit"
-                v-model="selected[0]"
-                class="switcher__box-select"
-        >
-          <option v-for="option in countries" :value="option.Name" :key="option.ID">
-            {{ option.Name}}
-          </option>
-        </select>
+      <div class="select mr-3">
+<!--        <select @change="convertOneUnit"-->
+<!--                v-model="selected[0]"-->
+<!--        >-->
+<!--          <option v-for="option in countries"-->
+<!--                  :value="option.Name"-->
+<!--                  :key="option.ID"-->
+<!--          >-->
+<!--            {{ option.Name}}-->
+<!--          </option>-->
+<!--        </select>-->
+
       </div>
+      <VSelect @selectOption="convertOneUnit"
+               :options="valutes"
+               class="select mr-3"
+
+      />
       <p>Текущая дата {{this.time}}</p>
     </div>
     <CurrencyList v-bind:currency="valutes"
@@ -21,20 +29,28 @@
 
 <script>
 import CurrencyList from '@/components/Currency-list.vue'
+import VSelect from "@/components/select/VSelect"
 
 export default {
   name: 'Currency-page',
+  components:{
+    CurrencyList,
+    VSelect
+  },
   data() {
     return {
       valutes: [],
       filtersOptions: ['Российский рубль'],
       countries: ['RUB'],
       selected: ['RUB', 'USD'],
-      time: ''
+      time: '',
+      temp: null
     }
   },
   methods: {
     convertOneUnit() {
+      console.log(this.selected[0])
+
       let defaultValute = {
         Value: 1,
         Nominal: 1
@@ -61,10 +77,14 @@ export default {
             .toFixed(4)
       })
     },
+    select(option){
+      this.selected[0] = option
+    }
   },
   mounted() {
     //'https://www.cbr-xml-daily.ru/daily_json.js'
     //'https://www.cbr-xml-daily.ru/latest.js'
+    //http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
     fetch('https://www.cbr-xml-daily.ru/daily_json.js')
         .then(res => res.json())
         .then(data => {
@@ -75,20 +95,15 @@ export default {
           }
         })
         .catch(err => console.log(err))
-  },
-  components: {
-    CurrencyList
+    const getExchangeRate = async()=>{
+      const response = await fetch('http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx')
+      console.log('response', response)
+    }
+    getExchangeRate()
   }
 }
 
 </script>
 <style scoped>
-.switcher__box {
-  max-width: 300px;
-  width: 100%;
-}
 
-.switcher__box-select {
-  width: 100%;
-}
 </style>
