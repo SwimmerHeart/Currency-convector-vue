@@ -1,12 +1,17 @@
 <template>
-  <select v-model="selected"  @change="$emit('selectOption', selected)">
-    <option v-for="option in options"
-            :value="option.Name"
-            :key="option.ID"
-    >
-      {{option.Name}}
-    </option>
-  </select>
+  <b-field>
+    <b-select
+        v-model="selected"
+        @change="$emit('selectOption', selected)">
+      <option v-for="option in options"
+              :value="option.Name"
+              :key="option.ID"
+      >
+        {{option.Name}}
+      </option>
+    </b-select>
+  </b-field>
+
 </template>
 
 <script>

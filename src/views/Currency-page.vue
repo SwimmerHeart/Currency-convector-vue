@@ -1,14 +1,12 @@
 <template>
   <div class="container">
-    <div class="select__box is-flex is-align-items-center is-justify-content-center mb-3">
-      <h3 class="select__title mr-3">Моя валюта</h3>
-      <div class="select mr-3">
-      </div>
+    <div class="columns is-vcentered is-centered">
+      <h3 class="column is-narrow">Моя валюта</h3>
       <VSelect @selectOption="convertOneUnit"
                :options="valutes"
-               class="select mr-3"
+               class="column is-narrow mb-0"
       />
-      <p>Текущая дата {{this.time}}</p>
+      <p class="column is-narrow">Текущая дата {{this.time}}</p>
     </div>
     <CurrencyList v-bind:currency="valutes" />
     <b-button

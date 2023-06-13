@@ -1,8 +1,8 @@
 <template>
-  <b-field type="is-primary mr-1">
-    <b-input type="text"
-             placeholder="Введите строку типа '15 usd in rub' для конвертирования"
-             v-model.trim="defaultValue"
+  <b-field type="is-primary mr-2">
+    <b-input :type="type"
+             :placeholder="placeholder"
+             v-model="defaultValue"
     />
   </b-field>
 </template>
