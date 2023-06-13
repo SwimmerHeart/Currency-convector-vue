@@ -1,10 +1,10 @@
 <template>
-    <input class="input is-primary mr-1"
-           type="text"
-           placeholder="Введите строку типа '15 usd in rub' для конвертирования"
-           :value="value"
-           @input="$emit('input', $event.target.value)"
-    >
+  <b-field type="is-primary mr-1">
+    <b-input type="text"
+             placeholder="Введите строку типа '15 usd in rub' для конвертирования"
+             v-model.trim="defaultValue"
+    />
+  </b-field>
 </template>
 `
 <script>
@@ -14,6 +14,24 @@ export default {
     value: {
       type: String,
       default: null
+    },
+    placeholder:{
+      type: String,
+      default: ''
+    },
+    type:{
+      type: String,
+      default: 'text'
+    }
+  },
+  computed:{
+    defaultValue:{
+      get(){
+        return this.value
+      },
+      set(value){
+        this.$emit('input', value)
+      }
     }
   },
 }

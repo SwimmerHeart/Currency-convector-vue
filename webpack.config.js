@@ -15,6 +15,17 @@ module.exports = {
         port: 8080,
         static: './dist',
         historyApiFallback: true,
+        // proxy: {
+        //     '/api': {
+        //         target: 'https://www.cbr-xml-daily.ru',
+        //         //проверка сертификатов
+        //         secure: false,
+        //         rejectUnauthorized: false,
+        //         //меняем имена cookie
+        //         cookieDomainRewrite: { "cbr-xml-daily.ru": "localhost" },
+        //         withCredentials: true,
+        //     },
+        // }
     },
     resolve: {
         alias: {
