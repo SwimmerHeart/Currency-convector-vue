@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import VInput from "@/components/input/VInput"
+import VInput from "@/components/framework/input/VInput"
 export default {
-  name: "MyInput",
+  name: "DataCurrencyInput",
   components:{
     VInput
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="columns is-centered">
-      <div class="column is-6">
+      <div class="column is-narrow">
         <FormBox @add-text="convector" />
         <div class="columns">
           <p class="column has-text-left">

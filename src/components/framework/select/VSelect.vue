@@ -3,7 +3,7 @@
     <b-select v-model="selectedItem"
     >
       <option v-for="option in options"
-              :value="option.Name"
+              :value="option.CharCode"
               :key="option.ID"
       >
         {{option.Name}}
@@ -16,10 +16,10 @@
 export default {
   name: "VSelect",
   props: {
-    // value: {
-    //   type: String,
-    //   default: null
-    // },
+    value: {
+      type: String,
+      default: null
+    },
     options: {
       type: Array,
       default (){
@@ -33,7 +33,7 @@ export default {
         return this.value
       },
       set(value){
-        this.$emit('change', value)
+        this.$emit('input', value)
       }
     }
   },

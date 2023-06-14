@@ -2,8 +2,8 @@
   <div class="container">
     <div class="columns is-vcentered is-centered">
       <h3 class="column is-narrow">Моя валюта</h3>
-      <USelect :options="valutes"
-               @selectOption="convertOneUnit"
+      <CurrencyNameSelection :options="currencyDisplay"
+                             v-model="CurrencyCode"
       />
       <p class="column is-narrow">Текущая дата {{this.time}}</p>
     </div>
@@ -17,8 +17,7 @@
 
 <script>
 import CurrencyList from '@/components/Currency-list.vue'
-import VSelect from "@/components/select/VSelect"
-import USelect from "@/components/select/USelect"
+import CurrencyNameSelection from "@/components/select/CurrencyNameSelection"
 
 import {getExchangeRate} from '@/api/api'
 
@@ -26,8 +25,7 @@ export default {
   name: 'Currency-page',
   components:{
     CurrencyList,
-    VSelect,
-    USelect
+    CurrencyNameSelection
   },
   data() {
     return {
@@ -36,13 +34,48 @@ export default {
       countries: ['RUB'],
       selected: ['RUB', 'USD'],
       time: '',
+      CurrencyCode: '',
+      currencyDisplay: []
     }
+  },
+  mounted() {
+    //'https://www.cbr-xml-daily.ru/daily_json.js'
+    //'https://www.cbr-xml-daily.ru/latest.js'
+    //http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
+
+    const getCurrencies = async () => {
+      const exchangeData = await getExchangeRate()
+      this.valutes = Object.values(exchangeData.Valute)
+      this.valutes.forEach(item=>{
+          this.currencyDisplay.push({
+            Name: item['Name'],
+            CharCode: item['CharCode']
+          })
+      })
+      //получаем текущую дату
+      this.time = exchangeData.Date.slice(0,-15).split('-').reverse().join('.')
+      for (let code of this.valutes) {
+        this.countries.push(code)
+      }
+    }
+    getCurrencies()
+  },
+  computed:{
+
   },
   methods: {
     snackbar() {
       this.$buefy.snackbar.open(`Default, positioned bottom-right with a green 'OK' button`)
     },
     convertOneUnit(option) {
+      // const baseCurrency = 'RUB'
+      // const baseCurrency = {
+      //   CharCode: 'RUB',
+      //   Name: 'Российский рубль',
+      //   Value: 1,
+      //   Nominal: 1
+      // }
+      // this.valutes.push(baseCurrency)
       this.selected[0] = option
       let defaultValute = {
         Value: 1,
@@ -58,8 +91,8 @@ export default {
 
       let result = (firstValuteValue / firstValuteNominal) / (secondValuteValue / secondValuteNominal)
       this.result = result ? result.toFixed(4) : null;
-
-      let currentObj = this.valutes.find(item=>item.Name === this.selected[0])
+      //определяем базовую валюту
+      let currentObj = this.valutes.find(item=>item.CharCode === this.selected[0])
 
       defaultValute.Value = currentObj.Value
       defaultValute.Nominal = currentObj.Nominal
@@ -71,38 +104,10 @@ export default {
       })
     }
   },
-  mounted() {
-    //'https://www.cbr-xml-daily.ru/daily_json.js'
-    //'https://www.cbr-xml-daily.ru/latest.js'
-    //http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
-
-    // fetch('https://www.cbr-xml-daily.ru/daily_json.js')
-    //     .then(res => res.json())
-    //     .then(data => {
-    //       this.valutes = Object.values(data.Valute)
-    //       this.time = data.Date.slice(0,-15).split('-').reverse().join('.')
-    //       for (let code of this.valutes) {
-    //         this.countries.push(code)
-    //       }
-    //     })
-    //     .catch(err => console.log(err))
-
-    const getCurrencies = async () => {
-      const exchangeData = await getExchangeRate()
-
-      this.valutes = Object.values(exchangeData.Valute)
-      //получаем текущую дату
-      this.time = exchangeData.Date.slice(0,-15).split('-').reverse().join('.')
-      for (let code of this.valutes) {
-        this.countries.push(code)
-      }
+  watch:{
+    CurrencyCode(){
+      this.convertOneUnit(this.CurrencyCode)
     }
-    getCurrencies()
-
-    // const getExchangeRateSber = async()=>{
-    //   const response = await fetch('http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx')
-    // }
-
   }
 }
 

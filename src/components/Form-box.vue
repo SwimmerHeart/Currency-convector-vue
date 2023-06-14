@@ -2,22 +2,27 @@
   <form class="is-flex mb-2"
         @submit.prevent="onSubmit"
   >
-    <u-input v-model="textInput"/>
-    <u-button type="submit">Перевести</u-button>
+    <DataCurrencyInput v-model="textInput"/>
+    <VButton submit="submit" :type="type"
+    >Перевести</VButton>
   </form>
 </template>
 
 <script>
-import UInput from "@/components/input/UInput"
-import UButton from "@/components/button/UButton"
+import DataCurrencyInput from "@/components/input/DataCurrencyInput"
+import VButton from "@/components/framework/button/VButton"
 
 export default {
   name: 'form-box',
   components: {
-    UInput,
-    UButton
+    DataCurrencyInput,
+    VButton
   },
-  props: {},
+  props: {
+    type:{
+      type: String,
+    }
+  },
   data(){
     return {
       textInput: ''
