@@ -2,13 +2,12 @@
   <div class="container">
     <div class="columns is-vcentered is-centered">
       <h3 class="column is-narrow">Моя валюта</h3>
-      <VSelect @selectOption="convertOneUnit"
-               :options="valutes"
-               class="column is-narrow mb-0"
+      <USelect :options="valutes"
+               @selectOption="convertOneUnit"
       />
       <p class="column is-narrow">Текущая дата {{this.time}}</p>
     </div>
-    <CurrencyList v-bind:currency="valutes" />
+    <CurrencyList :currency="valutes" />
     <b-button
         label="Ошибка загрузки с API"
         size="is-medium"
@@ -19,6 +18,7 @@
 <script>
 import CurrencyList from '@/components/Currency-list.vue'
 import VSelect from "@/components/select/VSelect"
+import USelect from "@/components/select/USelect"
 
 import {getExchangeRate} from '@/api/api'
 
@@ -27,6 +27,7 @@ export default {
   components:{
     CurrencyList,
     VSelect,
+    USelect
   },
   data() {
     return {
@@ -35,7 +36,6 @@ export default {
       countries: ['RUB'],
       selected: ['RUB', 'USD'],
       time: '',
-      temp: false
     }
   },
   methods: {

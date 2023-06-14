@@ -2,22 +2,20 @@
   <form class="is-flex mb-2"
         @submit.prevent="onSubmit"
   >
-    <my-input v-model="textInput"/>
-    <v-button>Перевести</v-button>
+    <u-input v-model="textInput"/>
+    <u-button type="submit">Перевести</u-button>
   </form>
 </template>
 
 <script>
-import VButton from "@/components/VButton"
-import VInput from "@/components/input/VInput"
-import MyInput from "@/components/input/UInput"
+import UInput from "@/components/input/UInput"
+import UButton from "@/components/button/UButton"
 
 export default {
   name: 'form-box',
   components: {
-    VButton,
-    MyInput,
-    VInput
+    UInput,
+    UButton
   },
   props: {},
   data(){
@@ -32,7 +30,7 @@ export default {
         this.$emit('add-text', text)
         this.textInput = ''
       }
-    },
+    }
   }
 }
 

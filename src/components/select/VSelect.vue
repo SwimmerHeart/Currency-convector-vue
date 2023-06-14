@@ -1,8 +1,7 @@
 <template>
   <b-field>
-    <b-select
-        v-model="selected"
-        @change="$emit('selectOption', selected)">
+    <b-select v-model="selectedItem"
+    >
       <option v-for="option in options"
               :value="option.Name"
               :key="option.ID"
@@ -11,13 +10,16 @@
       </option>
     </b-select>
   </b-field>
-
 </template>
 
 <script>
 export default {
   name: "VSelect",
   props: {
+    // value: {
+    //   type: String,
+    //   default: null
+    // },
     options: {
       type: Array,
       default (){
@@ -25,11 +27,16 @@ export default {
       }
     }
   },
-  data(){
-    return{
-      selected: ''
+  computed:{
+    selectedItem:{
+      get(){
+        return this.value
+      },
+      set(value){
+        this.$emit('change', value)
+      }
     }
-  }
+  },
 }
 </script>
 
