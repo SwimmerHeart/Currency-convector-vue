@@ -12,20 +12,23 @@ module.exports = {
     },
     devServer: {
         open: true,
-        port: 8080,
+        port: 8086,
         static: './dist',
         historyApiFallback: true,
-        // proxy: {
-        //     '/api': {
-        //         target: 'https://www.cbr-xml-daily.ru',
-        //         //проверка сертификатов
-        //         secure: false,
-        //         rejectUnauthorized: false,
-        //         //меняем имена cookie
-        //         cookieDomainRewrite: { "cbr-xml-daily.ru": "localhost" },
-        //         withCredentials: true,
-        //     },
-        // }
+        proxy: {
+            '/sbr/api': {
+                target: 'https://www.cbr-xml-daily.ru',
+                //проверка сертификатов
+                // secure: false,
+                // rejectUnauthorized: false,
+                //меняем имена cookie
+                // cookieDomainRewrite: { "cbr-xml-daily.ru": "localhost" },
+                // withCredentials: true,
+                //префикс /api будет удален из запроса
+                pathRewrite: { '^/cbr/api': '' },
+                changeOrigin: true
+            },
+        }
     },
     resolve: {
         alias: {

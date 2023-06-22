@@ -1,12 +1,12 @@
-const baseUrl = 'https://www.cbr-xml-daily.ru/daily_json.js'
+import {GET} from "@/api/fetch";
 
-export const getExchangeRate = async () => {
-    try {
-        // const response = await fetch(`/api/daily_json.js`)
-        const response = await fetch(baseUrl)
-        return await response.json()
-    }
-    catch (e) {
-        console.warn('Ошибка запроса к API', e)
-    }
+const baseUrl = 'https://www.cbr-xml-daily.ru/daily_json.js1'
+const baseUrlwithProxi = '/sbr/api/daily_json.js'
+// proxi api/daily_json.js
+// const testUrlErrors = 'https://statuscode.ir/403'
+const testUrlErrors = 'https://swapi.dev/api/films/1111/'
+
+
+export const getExchangeRate = async (time, options) => {
+        return await GET(testUrlErrors, {time}, options)
 }

@@ -3,7 +3,7 @@
     <b-select v-model="selectedItem"
     >
       <option v-for="option in options"
-              :value="option.CharCode"
+              :value="option.ID"
               :key="option.ID"
       >
         {{option.Name}}

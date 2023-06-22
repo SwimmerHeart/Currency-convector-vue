@@ -5,13 +5,9 @@
       <CurrencyNameSelection :options="currencyDisplay"
                              v-model="CurrencyCode"
       />
-      <p class="column is-narrow">Текущая дата {{this.time}}</p>
+      <p class="column is-narrow">Текущая дата {{ this.time }}</p>
     </div>
-    <CurrencyList :currency="valutes" />
-    <b-button
-        label="Ошибка загрузки с API"
-        size="is-medium"
-        @click="snackbar" />
+    <CurrencyList :currency="valutes"/>
   </div>
 </template>
 
@@ -20,10 +16,11 @@ import CurrencyList from '@/components/Currency-list.vue'
 import CurrencyNameSelection from "@/components/select/CurrencyNameSelection"
 
 import {getExchangeRate} from '@/api/api'
+import {snackbarError, snackbarInfo} from "@/components/Snackbar";
 
 export default {
   name: 'Currency-page',
-  components:{
+  components: {
     CurrencyList,
     CurrencyNameSelection
   },
@@ -39,34 +36,61 @@ export default {
     }
   },
   mounted() {
-    //'https://www.cbr-xml-daily.ru/daily_json.js'
-    //'https://www.cbr-xml-daily.ru/latest.js'
-    //http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
-
     const getCurrencies = async () => {
-      const exchangeData = await getExchangeRate()
-      this.valutes = Object.values(exchangeData.Valute)
-      this.valutes.forEach(item=>{
-          this.currencyDisplay.push({
-            Name: item['Name'],
-            CharCode: item['CharCode']
-          })
-      })
-      //получаем текущую дату
-      this.time = exchangeData.Date.slice(0,-15).split('-').reverse().join('.')
-      for (let code of this.valutes) {
-        this.countries.push(code)
-      }
+    //   try {
+    //     const exchangeData = await getExchangeRate(new Date().getTime())
+    //     snackbarInfo('Данные о валютах загружены')
+    //     this.valutes = Object.values(exchangeData.Valute)
+    //     this.valutes.forEach(item => {
+    //       this.currencyDisplay.push({
+    //         Name: item['Name'],
+    //         ID: item['CharCode']
+    //       })
+    //     })
+    //     this.time = exchangeData.Date.slice(0, -15).split('-').reverse().join('.')
+    //     for (let code of this.valutes) {
+    //       this.countries.push(code)
+    //     }
+    //   } catch (error) {
+    //     console.log('vue-error', error)
+    //     snackbarError(error)
+    //   }
+      // try{
+      //   // const exchangeData1 = await getExchangeRate(new Date().getTime(),{})
+      //   const exchangeData1 = await getExchangeRate(new Date().getTime(),
+      //       {handlers: {catch: [(error)=>{
+      //             snackbarError('Сейчас неполадки у банка, попробуйте позже')
+      //           }]}})
+      // }
+      // catch (error) {
+      //   console.log('vue-error2', error)
+      //   snackbarError('Сейчас неполадки у банка, попробуйте позже')
+      // }
+
+      // try {
+      //   const exchangeData1 = await getExchangeRate(new Date().getTime())
+      // }
+      // catch (e) {
+      //
+      // }
+      const exchangeData2 = await getExchangeRate(new Date().getTime(),
+          {handlers: {catch: [(error)=>{
+                console.log(error)
+                snackbarError('Сейчас неполадки у банка, попробуйте позже, запрос 2')
+                return Promise.resolve()
+              }]}})
+      // try{
+      //   const exchangeData3 = await getExchangeRate(new Date().getTime(),
+      //       {handlers: {catch: []}})
+      // }
+      // catch (error) {
+      //   snackbarError('Сейчас неполадки у банка, попробуйте позже, запрос 3')
+      // }
     }
     getCurrencies()
   },
-  computed:{
-
-  },
+  computed: {},
   methods: {
-    snackbar() {
-      this.$buefy.snackbar.open(`Default, positioned bottom-right with a green 'OK' button`)
-    },
     convertOneUnit(option) {
       // const baseCurrency = 'RUB'
       // const baseCurrency = {
@@ -92,20 +116,20 @@ export default {
       let result = (firstValuteValue / firstValuteNominal) / (secondValuteValue / secondValuteNominal)
       this.result = result ? result.toFixed(4) : null;
       //определяем базовую валюту
-      let currentObj = this.valutes.find(item=>item.CharCode === this.selected[0])
+      let currentObj = this.valutes.find(item => item.CharCode === this.selected[0])
 
       defaultValute.Value = currentObj.Value
       defaultValute.Nominal = currentObj.Nominal
 
-      this.valutes.map(item=>{
+      this.valutes.map(item => {
         // item.Value = (defaultValute.Value*defaultValute.Nominal/item.Value*item.Nominal)
-        item.Value = (defaultValute.Value/item.Value*item.Nominal)
+        item.Value = (defaultValute.Value / item.Value * item.Nominal)
             .toFixed(4)
       })
     }
   },
-  watch:{
-    CurrencyCode(){
+  watch: {
+    CurrencyCode() {
       this.convertOneUnit(this.CurrencyCode)
     }
   }

@@ -2,10 +2,11 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-narrow">
-        <FormBox @add-text="convector" />
+        <FormBox @add-text="convector"/>
         <div class="columns">
           <p class="column has-text-left">
-            Результат конвертации: ({{this.amount}} {{this.selected2[0]}} - {{this.selected2[1]}}) {{this.result}}
+            Результат конвертации: ({{ this.amount }} {{ this.selected2[0] }} - {{ this.selected2[1] }})
+            {{ this.result }}
           </p>
         </div>
       </div>
@@ -15,6 +16,9 @@
 
 <script>
 import FormBox from "@/components/Form-box";
+import {getExchangeRate} from "@/api/api";
+import {snackbarError, snackbarInfo} from "@/components/Snackbar";
+
 export default {
   name: 'Home-page',
   components: {FormBox},
@@ -32,21 +36,21 @@ export default {
     }
   },
   methods: {
-    convector(text){
+    convector(text) {
       this.amount = parseInt(text.match(/\d+/))
       this.paramsFromText = text.split(this.amount).join('').split(' ')
       this.selected2.length = 0
       console.log(this.paramsFromText)
-      this.countries.forEach(item=>{
-        if(this.paramsFromText.indexOf(item) !== -1){
+      this.countries.forEach(item => {
+        if (this.paramsFromText.indexOf(item) !== -1) {
           this.elem1 = this.paramsFromText.indexOf(item)
           return true
         }
-        if(this.paramsFromText.lastIndexOf(item) !== -1){
+        if (this.paramsFromText.lastIndexOf(item) !== -1) {
           this.elem2 = this.paramsFromText.lastIndexOf(item)
           return true
         }
-          // this.selected2.length !== 0 ? this.selected2[0] = item : this.selected2[1] = item
+        // this.selected2.length !== 0 ? this.selected2[0] = item : this.selected2[1] = item
       })
       console.log('this.elem1', this.elem1)
       console.log('this.elem2', this.elem2)
@@ -72,18 +76,19 @@ export default {
   },
 
   mounted() {
-    //'https://www.cbr-xml-daily.ru/daily_json.js'
-    //'https://www.cbr-xml-daily.ru/latest.js'
-    fetch('https://www.cbr-xml-daily.ru/daily_json.js')
-        .then(res => res.json())
-        .then(data => {
-          this.valutes = data.Valute
-
-          for (let code in this.valutes) {
-            this.countries.push(code)
-          }
-        })
-        .catch(err => console.log(err))
+    const getCurrencies = async () => {
+      try {
+        const exchangeData = await getExchangeRate()
+        snackbarInfo('Данные о валютах загружены')
+        this.valutes = exchangeData.Valute
+        for (let code in this.valutes) {
+          this.countries.push(code)
+        }
+      } catch (error) {
+        snackbarError(error)
+      }
+    }
+    getCurrencies()
   }
 }
 </script>
