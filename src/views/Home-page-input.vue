@@ -2,7 +2,9 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-narrow">
-        <FormBox @add-text="convector"/>
+        <CurrencyNameSelection :options="formSelection" v-model="form"/>
+        <FormInput @add-text="convector"/>
+        <FormSelect />
         <div class="columns">
           <p class="column has-text-left">
             Результат конвертации: ({{ this.amount }} {{ this.selected2[0] }} - {{ this.selected2[1] }})
@@ -15,13 +17,19 @@
 </template>
 
 <script>
-import FormBox from "@/components/Form-box";
+import FormInput from "@/components/Form-input";
 import {getExchangeRate} from "@/api/api";
 import {snackbarError, snackbarInfo} from "@/components/Snackbar";
+import FormSelect from "@/components/Form-select";
+import CurrencyNameSelection from "@/components/select/CurrencyNameSelection"
 
 export default {
   name: 'Home-page',
-  components: {FormBox},
+  components: {
+    FormSelect,
+    FormInput,
+    CurrencyNameSelection
+  },
   data() {
     return {
       text: '',
@@ -33,6 +41,8 @@ export default {
       elem2: '',
       result: null,
       countries: ['RUB'],
+      formSelection: ['в строке', 'с выбором валюты'],
+      form: ''
     }
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <v-input placeholder="Введите строку типа '15 usd in rub' для конвертирования"
+  <VInput placeholder="Введите строку типа '15 usd in rub' для конвертирования"
            v-model="defaultValue"
   />
 </template>

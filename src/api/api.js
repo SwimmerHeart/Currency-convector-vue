@@ -8,5 +8,5 @@ const testUrlErrors = 'https://swapi.dev/api/films/1111/'
 
 
 export const getExchangeRate = async (time, options) => {
-        return await GET(testUrlErrors, {time}, options)
+        return await GET(baseUrlwithProxi, {time}, options)
 }

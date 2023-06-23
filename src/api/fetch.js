@@ -1,46 +1,51 @@
 import {handlerError, handlerResponse, handlerToJSON} from "@/api/handlers";
 
-export function query(url, config, {handlers={}}={}) {
+export function query(url, config, {handlers} = {}) {
     console.warn('handlers', handlers)
     // проверять массив или просто объект в handlers
     // что если мы передаем handlers, но не передаем catch
 
-    const _fetch = fetch(url, config).then(handlerResponse)
-
+    let _fetch = fetch(url, config).then(handlerResponse)
+    // флаг для проверки того, нужно ли прервать выполнение цепочки промисов после текущей итерации цикла
+    let shouldBreak = false;
     if (handlers?.catch) {
         //проверяем на массив catch
-        if(Array.isArray(handlers.catch)){
+        if (Array.isArray(handlers.catch)) {
             for (let func of handlers.catch) {
                 //не пустой ли объект
                 if (func) {
                     //передаем свой handler
-                    _fetch.catch(func)
+                    _fetch = _fetch
+                        .catch(func)
+                        .then(()=>Promise.reject('error json'))
                 }
             }
-        }
-        else {
-            _fetch.catch(handlers.catch)
+        } else {
+            _fetch = _fetch.catch(handlers.catch)
         }
     } else {
         //catch по умолчанию
-        _fetch.catch(handlerError)
+        _fetch = _fetch.catch(handlerError)
     }
     if (handlers?.then) {
-        if(Array.isArray(handlers.catch)){
+        if (Array.isArray(handlers.catch)) {
             for (let func of handlers.catch) {
                 //не пустой ли объект
                 if (func) {
-                    _fetch.catch(func)
+                    _fetch = _fetch.catch(func)
                 }
             }
-        }
-        else {
-            _fetch.catch(handlers.catch)
+        } else {
+            _fetch = _fetch.catch(handlers.catch)
         }
     } else {
-        _fetch.then(handlerToJSON)
+        _fetch = _fetch
+            .then(handlerToJSON)
+            .catch(error=>{
+                console.log(error)
+            })
     }
-    console.warn('_fetch',_fetch)
+    console.warn('_fetch', _fetch)
     return _fetch
 }
 

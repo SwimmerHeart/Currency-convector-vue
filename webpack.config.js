@@ -25,7 +25,7 @@ module.exports = {
                 // cookieDomainRewrite: { "cbr-xml-daily.ru": "localhost" },
                 // withCredentials: true,
                 //префикс /api будет удален из запроса
-                pathRewrite: { '^/cbr/api': '' },
+                pathRewrite: { '^/sbr/api': '' },
                 changeOrigin: true
             },
         }

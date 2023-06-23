@@ -37,35 +37,36 @@ export default {
   },
   mounted() {
     const getCurrencies = async () => {
-    //   try {
-    //     const exchangeData = await getExchangeRate(new Date().getTime())
-    //     snackbarInfo('Данные о валютах загружены')
-    //     this.valutes = Object.values(exchangeData.Valute)
-    //     this.valutes.forEach(item => {
-    //       this.currencyDisplay.push({
-    //         Name: item['Name'],
-    //         ID: item['CharCode']
-    //       })
-    //     })
-    //     this.time = exchangeData.Date.slice(0, -15).split('-').reverse().join('.')
-    //     for (let code of this.valutes) {
-    //       this.countries.push(code)
-    //     }
-    //   } catch (error) {
-    //     console.log('vue-error', error)
-    //     snackbarError(error)
-    //   }
-      // try{
-      //   // const exchangeData1 = await getExchangeRate(new Date().getTime(),{})
-      //   const exchangeData1 = await getExchangeRate(new Date().getTime(),
-      //       {handlers: {catch: [(error)=>{
-      //             snackbarError('Сейчас неполадки у банка, попробуйте позже')
-      //           }]}})
-      // }
-      // catch (error) {
-      //   console.log('vue-error2', error)
-      //   snackbarError('Сейчас неполадки у банка, попробуйте позже')
-      // }
+      try {
+        const exchangeData = await getExchangeRate(new Date().getTime())
+        snackbarInfo('Данные о валютах загружены')
+        this.valutes = Object.values(exchangeData.Valute)
+        this.valutes.forEach(item => {
+          this.currencyDisplay.push({
+            Name: item['Name'],
+            ID: item['CharCode']
+          })
+        })
+        this.time = exchangeData.Date.slice(0, -15).split('-').reverse().join('.')
+        for (let code of this.valutes) {
+          this.countries.push(code)
+        }
+      } catch (error) {
+        console.log('vue-error', error)
+        snackbarError(error.message)
+      }
+      try{
+        // const exchangeData1 = await getExchangeRate(new Date().getTime(),{})
+        const exchangeData1 = await getExchangeRate(new Date().getTime(),
+            {handlers: {
+              catch: [(error)=>{
+                  snackbarError('Сейчас неполадки у банка, попробуйте позже')
+                }]}})
+      }
+      catch (error) {
+        console.log('vue-error2', error)
+        snackbarError('Сейчас неполадки у банка, попробуйте позже')
+      }
 
       // try {
       //   const exchangeData1 = await getExchangeRate(new Date().getTime())
@@ -73,12 +74,14 @@ export default {
       // catch (e) {
       //
       // }
-      const exchangeData2 = await getExchangeRate(new Date().getTime(),
-          {handlers: {catch: [(error)=>{
-                console.log(error)
-                snackbarError('Сейчас неполадки у банка, попробуйте позже, запрос 2')
-                return Promise.resolve()
-              }]}})
+      // const exchangeData2 = await getExchangeRate(new Date().getTime(),
+      //     {handlers: {
+      //       // then: [],
+      //       catch: [(error)=>{
+      //           console.log(error)
+      //           snackbarError('Сейчас неполадки у банка, попробуйте позже, запрос 2')
+      //           return Promise.resolve()
+      //         }]}})
       // try{
       //   const exchangeData3 = await getExchangeRate(new Date().getTime(),
       //       {handlers: {catch: []}})
