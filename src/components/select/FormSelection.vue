@@ -1,16 +1,16 @@
 <template>
-  <VSelect :options="options"
-           v-model="selectedItem"
-           :placeholder="placeholder"
+  <VFormSelection :options="options"
+                  v-model="selectedItem"
+                  label="Выберете варианты для конвертации"
   />
 </template>
 
 <script>
-import VSelect from "@/components/framework/select/VSelect"
+import VFormSelection from "@/components/framework/select/VFormSelection"
 export default {
-  name: "USelect",
-  components:{
-    VSelect
+  name: "FormSelection",
+  components: {
+    VFormSelection
   },
   props: {
     value:{
@@ -21,10 +21,6 @@ export default {
       default (){
         return []
       }
-    },
-    placeholder:{
-      type: String,
-      default: ''
     }
   },
   methods:{

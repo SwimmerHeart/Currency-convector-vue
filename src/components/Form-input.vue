@@ -2,7 +2,9 @@
   <form class="is-flex mb-2"
         @submit.prevent="onSubmit"
   >
-    <DataCurrencyInput v-model="textInput"/>
+    <DataCurrencyInput v-model="textInput"
+                       placeholder="Введите строку типа '15 usd in rub' для конвертирования"
+    />
     <VButton submit="submit" :type="type"
     >Перевести</VButton>
   </form>

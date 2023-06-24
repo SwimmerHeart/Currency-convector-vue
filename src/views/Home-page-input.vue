@@ -1,10 +1,17 @@
 <template>
   <div class="container">
+    <div class="columns is-centered is-vcentered">
+        <FormSelection :options="formSelection" v-model="form"/>
+    </div>
     <div class="columns is-centered">
-      <div class="column is-narrow">
-        <CurrencyNameSelection :options="formSelection" v-model="form"/>
-        <FormInput @add-text="convector"/>
-        <FormSelect />
+      <div>
+        <FormInput v-if="form === 'в строке'"
+                   @add-text="convector"
+        />
+        <FormSelect v-else
+                    :options="currencyDisplay"
+                    @addDataSelect="convectorWithSelect"
+        />
         <div class="columns">
           <p class="column has-text-left">
             Результат конвертации: ({{ this.amount }} {{ this.selected2[0] }} - {{ this.selected2[1] }})
@@ -21,14 +28,14 @@ import FormInput from "@/components/Form-input";
 import {getExchangeRate} from "@/api/api";
 import {snackbarError, snackbarInfo} from "@/components/Snackbar";
 import FormSelect from "@/components/Form-select";
-import CurrencyNameSelection from "@/components/select/CurrencyNameSelection"
+import FormSelection from "@/components/select/FormSelection"
 
 export default {
   name: 'Home-page',
   components: {
     FormSelect,
     FormInput,
-    CurrencyNameSelection
+    FormSelection
   },
   data() {
     return {
@@ -41,13 +48,19 @@ export default {
       elem2: '',
       result: null,
       countries: ['RUB'],
-      formSelection: ['в строке', 'с выбором валюты'],
-      form: ''
+      formSelection: ['в строке','с выбором валюты'],
+      form: 'в строке',
+      currencyDisplay: [{Name: 'Российский рубль', ID: 'RUB'}],
+      CurrencyCodeFrom: '',
+      CurrencyCodeTo: '',
+      amountSelect: 1
     }
   },
   methods: {
     convector(text) {
+      //определяем сумму из инпута, вырезая текст
       this.amount = parseInt(text.match(/\d+/))
+      //получаем массив из слитных букв(сначала вырезаем из строки сумму, потом вырезаем пробелы)
       this.paramsFromText = text.split(this.amount).join('').split(' ')
       this.selected2.length = 0
       console.log(this.paramsFromText)
@@ -83,6 +96,22 @@ export default {
       //округляем
       this.result = result ? result.toFixed(4) : null;
     },
+    convectorWithSelect(amount, codeFrom, codeTo){
+      this.CurrencyCodeFrom = codeFrom;
+      this.CurrencyCodeTo = codeTo;
+      this.amountSelect = +amount;
+
+      const baseCurrency = 'RUB'
+      let baseValue = {
+        Value: 1,
+        Nominal: 1
+      };
+      let exchangeCurrencyFrom = 1 / ((this.valutes[codeFrom]?.Value ?? baseValue.Value)/ (this.valutes[codeFrom]?.Nominal ?? baseValue.Nominal))
+      let exchangeCurrencyTo = 1 / ((this.valutes[codeTo]?.Value ?? baseValue.Value)/ (this.valutes[codeTo]?.Nominal ?? baseValue.Nominal))
+      let exchangeRate = +amount * (exchangeCurrencyTo / exchangeCurrencyFrom)
+      this.text = `${amount} ${codeFrom} in ${codeTo}`
+      console.log(exchangeRate)
+    }
   },
 
   mounted() {
@@ -94,6 +123,12 @@ export default {
         for (let code in this.valutes) {
           this.countries.push(code)
         }
+        Object.values(exchangeData.Valute).forEach(item => {
+          this.currencyDisplay.push({
+            Name: item['Name'],
+            ID: item['CharCode']
+          })
+        })
       } catch (error) {
         snackbarError(error)
       }

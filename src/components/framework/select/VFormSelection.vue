@@ -1,19 +1,21 @@
 <template>
-    <b-select v-model="selectedItem"
-              :placeholder="placeholder"
-    >
-      <option v-for="option in options"
-              :value="option.ID"
-              :key="option.ID"
+  <b-field :label="label"
+           class="column is-narrow"
+  >
+    <b-select v-model="selectedItem">
+      <option v-for="(option, index) in options"
+              :value="option"
+              :key="index"
       >
-        {{option.Name}}
+        {{option}}
       </option>
     </b-select>
+  </b-field>
 </template>
 
 <script>
 export default {
-  name: "VSelect",
+  name: "VFormSelection",
   props: {
     value: {
       type: String,
@@ -25,9 +27,9 @@ export default {
         return []
       }
     },
-    placeholder:{
+    label: {
       type: String,
-      default: ''
+      default: null
     }
   },
   computed:{

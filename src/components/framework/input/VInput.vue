@@ -1,10 +1,8 @@
 <template>
-  <b-field type="is-primary mr-2">
     <b-input :type="type"
              :placeholder="placeholder"
              v-model="defaultValue"
     />
-  </b-field>
 </template>
 `
 <script>

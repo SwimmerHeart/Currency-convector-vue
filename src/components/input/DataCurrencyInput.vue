@@ -1,6 +1,8 @@
 <template>
-  <VInput placeholder="Введите строку типа '15 usd in rub' для конвертирования"
+  <VInput :placeholder="placeholder"
            v-model="defaultValue"
+          :type="type"
+
   />
 </template>
 
@@ -16,6 +18,14 @@ export default {
       type: String,
       default: null
     },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: 'text'
+    }
   },
   computed:{
     defaultValue:{
