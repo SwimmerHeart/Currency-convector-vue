@@ -7,6 +7,7 @@
               :key="option.ID"
       >
         {{option.Name}}
+<!--        <slot>именованный-->
       </option>
     </b-select>
 </template>
@@ -14,6 +15,7 @@
 <script>
 export default {
   name: "VSelect",
+  //добавить 2 ключа, которые покажут что является value и label
   props: {
     value: {
       type: String,

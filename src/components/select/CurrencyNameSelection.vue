@@ -2,7 +2,8 @@
   <VSelect :options="options"
            v-model="selectedItem"
            :placeholder="placeholder"
-  />
+  >
+  </VSelect>
 </template>
 
 <script>

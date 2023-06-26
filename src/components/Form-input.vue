@@ -15,7 +15,7 @@ import DataCurrencyInput from "@/components/input/DataCurrencyInput"
 import VButton from "@/components/framework/button/VButton"
 
 export default {
-  name: 'form-box',
+  name: 'form-input',
   components: {
     DataCurrencyInput,
     VButton
@@ -23,21 +23,43 @@ export default {
   props: {
     type:{
       type: String,
-    }
-  },
-  data(){
-    return {
-      textInput: ''
-    }
+    },
+    value: {
+      type: Object,
+      default: null
+    },
   },
   methods: {
+    // onSubmit() {
+    //   if (this.textInput.trim()) {
+    //     const text = this.textInput.trim().toUpperCase()
+    //     this.$emit('add-text', text)
+    //     this.textInput = ''
+    //   }
+    // }
     onSubmit() {
-      if (this.textInput.trim()) {
-        const text = this.textInput.trim().toUpperCase()
-        this.$emit('add-text', text)
-        this.textInput = ''
-      }
+      this.$emit('add-text')
     }
+  },
+  computed:{
+    textInput:{
+      get(){
+        return `${this.value.amount} ${this.value.CurrencyCodeFrom} in ${this.value.CurrencyCodeTo}`
+      },
+      set(value){
+        const regex = new RegExp(`(\\d+)\\s*(${this.value.countries?.join('|')})\\b\\s+in\\s+(${this.value.countries?.join('|')})\\b`, 'i');
+        const match = value.toUpperCase().match(regex);
+        if (match) {
+          const resultStr = {
+            amount: match[1],
+            CurrencyCodeFrom: match[2],
+            CurrencyCodeTo: match[3],
+            countries: this.value.countries
+          }
+          this.$emit('input', resultStr)
+        }
+      }
+    },
   }
 }
 

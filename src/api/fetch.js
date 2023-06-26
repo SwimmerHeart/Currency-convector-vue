@@ -8,25 +8,6 @@ export function query(url, config, {handlers} = {}) {
     let _fetch = fetch(url, config).then(handlerResponse)
     // флаг для проверки того, нужно ли прервать выполнение цепочки промисов после текущей итерации цикла
     let shouldBreak = false;
-    if (handlers?.catch) {
-        //проверяем на массив catch
-        if (Array.isArray(handlers.catch)) {
-            for (let func of handlers.catch) {
-                //не пустой ли объект
-                if (func) {
-                    //передаем свой handler
-                    _fetch = _fetch
-                        .catch(func)
-                        .then(()=>Promise.reject('error json'))
-                }
-            }
-        } else {
-            _fetch = _fetch.catch(handlers.catch)
-        }
-    } else {
-        //catch по умолчанию
-        _fetch = _fetch.catch(handlerError)
-    }
     if (handlers?.then) {
         if (Array.isArray(handlers.catch)) {
             for (let func of handlers.catch) {
@@ -41,10 +22,26 @@ export function query(url, config, {handlers} = {}) {
     } else {
         _fetch = _fetch
             .then(handlerToJSON)
-            .catch(error=>{
-                console.log(error)
-            })
     }
+    if (handlers?.catch) {
+        //проверяем на массив catch
+        if (Array.isArray(handlers.catch)) {
+            for (let func of handlers.catch) {
+                //не пустой ли объект
+                if (func) {
+                    //передаем свой handler
+                    _fetch = _fetch
+                        .catch(func)
+                }
+            }
+        } else {
+            _fetch = _fetch.catch(handlers.catch)
+        }
+    } else {
+        //catch по умолчанию
+        _fetch = _fetch.catch(handlerError)
+    }
+
     console.warn('_fetch', _fetch)
     return _fetch
 }

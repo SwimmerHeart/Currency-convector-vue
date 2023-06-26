@@ -43,21 +43,59 @@ export default {
     options:{
       type: Array,
       default: []
-    }
-  },
-  data() {
-    return {
-      textInput: '',
-      CurrencyCodeFrom: '',
-      CurrencyCodeTo: ''
+    },
+    value:{
+      type: Object,
+      default: {}
     }
   },
   methods: {
     onSubmit() {
-       this.$emit('addDataSelect', this.textInput, this.CurrencyCodeFrom, this.CurrencyCodeTo)
-          this.textInput = ''
-          this.CurrencyCodeFrom = ''
-          this.CurrencyCodeTo = ''
+       this.$emit('addDataSelect')
+    }
+  },
+  computed:{
+    textInput:{
+      get(){
+        return this.value.amount
+      },
+      set(value){
+        const resultStr = {
+          amount: value,
+          CurrencyCodeFrom: this.value.CurrencyCodeFrom,
+          CurrencyCodeTo: this.value.CurrencyCodeTo,
+          countries: this.value.countries
+        }
+        this.$emit('input', resultStr)
+      }
+    },
+    CurrencyCodeFrom:{
+      get(){
+        return this.value.CurrencyCodeFrom
+      },
+      set(value){
+        const resultStr = {
+          amount: this.value.amount,
+          CurrencyCodeFrom: value,
+          CurrencyCodeTo: this.value.CurrencyCodeTo,
+          countries: this.value.countries
+        }
+        this.$emit('input', resultStr)
+      }
+    },
+    CurrencyCodeTo:{
+      get(){
+        return this.value.CurrencyCodeTo
+      },
+      set(value){
+        const resultStr = {
+          amount: this.value.amount,
+          CurrencyCodeFrom: this.value.CurrencyCodeFrom,
+          CurrencyCodeTo: value,
+          countries: this.value.countries
+        }
+        this.$emit('input', resultStr)
+      }
     }
   }
 }
