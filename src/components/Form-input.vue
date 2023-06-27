@@ -30,20 +30,17 @@ export default {
     },
   },
   methods: {
-    // onSubmit() {
-    //   if (this.textInput.trim()) {
-    //     const text = this.textInput.trim().toUpperCase()
-    //     this.$emit('add-text', text)
-    //     this.textInput = ''
-    //   }
-    // }
     onSubmit() {
-      this.$emit('add-text')
+      this.$emit('addData')
     }
   },
   computed:{
     textInput:{
       get(){
+        console.log(this.value)
+        if(!this.value?.amount){
+          return ''
+        }
         return `${this.value.amount} ${this.value.CurrencyCodeFrom} in ${this.value.CurrencyCodeTo}`
       },
       set(value){

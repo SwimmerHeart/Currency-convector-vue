@@ -1,6 +1,7 @@
 <template>
   <VInput :placeholder="placeholder"
-           v-model="defaultValue"
+           v-model.number="defaultValue"
+           type="number"
 
   />
 </template>
@@ -14,12 +15,16 @@ export default {
   },
   props:{
     value: {
-      type: String,
+      type: Number,
       default: null
     },
     placeholder: {
       type: String,
       default: ''
+    },
+    type: {
+      type: String,
+      default: 'text'
     }
   },
   computed:{
@@ -28,7 +33,7 @@ export default {
         return this.value
       },
       set(value){
-        this.$emit('input', value)
+        this.$emit('input', value ? parseFloat(value) : undefined)
       }
     }
   }

@@ -3,17 +3,16 @@
       @submit.prevent="onSubmit"
   >
     <VField>
-      <DataCurrencyInput v-model="textInput"
+      <DataAmountInput v-model="data.amount"
                          placeholder="0,00"
-                         type="number"
       />
       <CurrencyNameSelection placeholder="Currency from"
                              :options="options"
-                             v-model="CurrencyCodeFrom"
+                             v-model="data.CurrencyCodeFrom"
       />
       <CurrencyNameSelection placeholder="Currency to"
                              :options="options"
-                             v-model="CurrencyCodeTo"
+                             v-model="data.CurrencyCodeTo"
       />
       <VButton submit="submit" :type="type"
       >Перевести
@@ -23,18 +22,18 @@
 </template>
 
 <script>
-import DataCurrencyInput from "@/components/input/DataCurrencyInput"
 import VButton from "@/components/framework/button/VButton"
 import CurrencyNameSelection from "@/components/select/CurrencyNameSelection"
 import VField from "@/components/framework/VField"
+import DataAmountInput from "@/components/input/DataAmountInput"
 
 export default {
   name: "Form-select",
   components: {
-    DataCurrencyInput,
     VButton,
     CurrencyNameSelection,
-    VField
+    VField,
+    DataAmountInput
   },
   props: {
     type: {
@@ -49,9 +48,14 @@ export default {
       default: {}
     }
   },
+  data(){
+    return{
+      data: ''
+    }
+  },
   methods: {
     onSubmit() {
-       this.$emit('addDataSelect')
+       this.$emit('input', this.data)
     }
   },
   computed:{
@@ -97,6 +101,11 @@ export default {
         this.$emit('input', resultStr)
       }
     }
+  },
+  watch:{
+    value(value){
+      this.data = this.value
+}
   }
 }
 </script>

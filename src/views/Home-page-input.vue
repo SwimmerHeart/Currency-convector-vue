@@ -1,23 +1,30 @@
 <template>
   <div class="container">
     <div class="columns is-centered is-vcentered">
+      <DisplaySelectionCheckbox v-model="formCheck" :label="labelComponent"/>
 <!--      <input type="checkbox" id="checkbox" v-model="formCheck">-->
-<!--      <label for="checkbox">{{ formCheck }}</label>-->
-        <FormSelection :options="formSelection" v-model="form"/>
+<!--      <label for="checkbox">{{component}}</label>-->
+<!--        <FormSelection :options="formSelection" v-model="form"/>-->
     </div>
     <div class="columns is-centered">
       <div>
-<!--        <Component :is="formCheck" ></Component>-->
-        <FormInput v-if="form === 'в строке'"
-                   @add-text="convector"
-                   v-model="convert"
-        />
-        <FormSelect v-else
-                    :options="currencyDisplay"
-                    @addDataSelect="convector"
-                    v-model="convert"
-
-        />
+        <keep-alive>
+          <component :is="component"
+                     @input="convector"
+                     :options="currencyDisplay"
+                     :countries="countries"
+                     v-model="convert"
+          ></component>
+        </keep-alive>
+<!--        <FormInput v-if="form === 'в строке'"-->
+<!--                   @addData="convector"-->
+<!--                   v-model="convert"-->
+<!--        />-->
+<!--        <FormSelect v-else-->
+<!--                    :options="currencyDisplay"-->
+<!--                    @addData="convector"-->
+<!--                    v-model="convert"-->
+<!--        />-->
         <div class="columns">
           <p class="column has-text-left">
             Результат конвертации: {{ this.exchangeRate }}
@@ -29,34 +36,39 @@
 </template>
 
 <script>
-import FormInput from "@/components/Form-input";
-import {getExchangeRate} from "@/api/api";
-import {snackbarError, snackbarInfo} from "@/components/Snackbar";
-import FormSelect from "@/components/Form-select";
+import FormInput from "@/components/Form-input"
+import {getExchangeRate} from "@/api/api"
+import {snackbarError, snackbarInfo} from "@/components/Snackbar"
+import FormSelect from "@/components/Form-select"
 import FormSelection from "@/components/select/FormSelection"
+import DisplaySelectionCheckbox from "@/components/input/DisplaySelectionCheckbox"
 
 export default {
   name: 'Home-page',
   components: {
     FormSelect,
     FormInput,
-    FormSelection
+    FormSelection,
+    DisplaySelectionCheckbox
   },
-  //Переключение между формами с помощью checkbox
+  //Переключение между компонентами формам с помощью checkbox
   //Переключение должно осуществляться с помощью базового компонента Vue
   data() {
     return {
       valutes: {},
       formSelection: ['в строке','с выбором валюты'],
       form: 'в строке',
-      formCheck: 'FormInput',
+      component: 'FormInput',
+      formCheck: true,
+      labelComponent: 'сокращенный вариант',
       currencyDisplay: [{Name: 'Российский рубль', ID: 'RUB'}],
       convert: {
-        amount: '',
+        amount: undefined,
         CurrencyCodeFrom: '',
         CurrencyCodeTo: '',
         countries: ['RUB']
       },
+      countries: ['RUB'],
       exchangeRate: ''
     }
   },
@@ -82,7 +94,9 @@ export default {
         snackbarInfo('Данные о валютах загружены')
         this.valutes = exchangeData.Valute
         for (let code in this.valutes) {
+          //потом удалить ниже строчку
           this.convert.countries.push(code)
+          this.countries.push(code)
         }
         Object.values(exchangeData.Valute).forEach(item => {
           this.currencyDisplay.push({
@@ -96,6 +110,13 @@ export default {
     }
     getCurrencies()
   },
+  watch: {
+    formCheck() {
+      this.component = this.formCheck ? 'FormInput' : 'FormSelect'
+      this.labelComponent = this.formCheck ? 'сокращенный вариант' : 'полный вариант'
+    },
+
+  }
 }
 </script>
 <style scoped>

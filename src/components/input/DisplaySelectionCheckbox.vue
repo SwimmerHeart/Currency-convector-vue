@@ -1,29 +1,26 @@
 <template>
-  <VInput :placeholder="placeholder"
-           v-model="defaultValue"
-
-  />
+    <VCheckbox :label="label" v-model="checkbox"/>
 </template>
 
 <script>
-import VInput from "@/components/framework/input/VInput"
+import VCheckbox from "@/components/framework/input/VCheckbox"
 export default {
-  name: "DataCurrencyInput",
+  name: "DisplaySelectionCheckbox",
   components:{
-    VInput
+    VCheckbox
   },
   props:{
     value: {
-      type: String,
+      type: [String, Boolean],
       default: null
     },
-    placeholder: {
+    label: {
       type: String,
       default: ''
     }
   },
   computed:{
-    defaultValue:{
+    checkbox:{
       get(){
         return this.value
       },

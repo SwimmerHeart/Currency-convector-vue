@@ -4,13 +4,12 @@
              v-model="defaultValue"
     />
 </template>
-`
 <script>
 export default {
   name: "VInput",
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: null
     },
     placeholder:{
