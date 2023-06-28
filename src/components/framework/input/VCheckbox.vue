@@ -1,5 +1,8 @@
 <template>
-  <b-checkbox v-model="checkbox">
+  <b-checkbox v-model="checkbox"
+              :true-value="trueValue"
+              :false-value="falseValue"
+  >
     {{ label }}
   </b-checkbox>
 </template>
@@ -15,7 +18,13 @@ export default {
     label: {
       type: String,
       default: ''
-    }
+    },
+    trueValue:{
+      type: [Boolean, String, Number]
+    },
+    falseValue:{
+      type: [Boolean, String, Number]
+    },
   },
   computed: {
     checkbox: {

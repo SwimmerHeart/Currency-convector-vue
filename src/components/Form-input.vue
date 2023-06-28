@@ -28,6 +28,10 @@ export default {
       type: Object,
       default: null
     },
+    countries: {
+      type: Array,
+      default: []
+    },
   },
   methods: {
     onSubmit() {
@@ -37,21 +41,21 @@ export default {
   computed:{
     textInput:{
       get(){
-        console.log(this.value)
         if(!this.value?.amount){
           return ''
         }
+        if(!this.value?.CurrencyCodeFrom) return `${this.value.amount}`
+        if(!this.value?.CurrencyCodeTo) return `${this.value.amount} ${this.value.CurrencyCodeFrom} in `
         return `${this.value.amount} ${this.value.CurrencyCodeFrom} in ${this.value.CurrencyCodeTo}`
       },
       set(value){
-        const regex = new RegExp(`(\\d+)\\s*(${this.value.countries?.join('|')})\\b\\s+in\\s+(${this.value.countries?.join('|')})\\b`, 'i');
+        const regex = new RegExp(`(\\d+)\\s*(${this.countries.join('|')})\\b\\s+in\\s+(${this.countries.join('|')})\\b`, 'i');
         const match = value.toUpperCase().match(regex);
         if (match) {
           const resultStr = {
-            amount: match[1],
+            amount: parseFloat(match[1]),
             CurrencyCodeFrom: match[2],
-            CurrencyCodeTo: match[3],
-            countries: this.value.countries
+            CurrencyCodeTo: match[3]
           }
           this.$emit('input', resultStr)
         }

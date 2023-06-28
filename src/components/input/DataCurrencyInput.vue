@@ -1,7 +1,6 @@
 <template>
   <VInput :placeholder="placeholder"
            v-model="defaultValue"
-
   />
 </template>
 

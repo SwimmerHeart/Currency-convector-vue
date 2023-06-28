@@ -1,5 +1,9 @@
 <template>
-    <VCheckbox :label="label" v-model="checkbox"/>
+    <VCheckbox :label="label"
+               v-model="checkbox"
+               true-value="FormInput"
+               false-value="FormSelect"
+    />
 </template>
 
 <script>
@@ -17,7 +21,7 @@ export default {
     label: {
       type: String,
       default: ''
-    }
+    },
   },
   computed:{
     checkbox:{

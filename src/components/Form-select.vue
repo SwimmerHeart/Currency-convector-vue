@@ -4,7 +4,7 @@
   >
     <VField>
       <DataAmountInput v-model="data.amount"
-                         placeholder="0,00"
+                       placeholder="0,00"
       />
       <CurrencyNameSelection placeholder="Currency from"
                              :options="options"
@@ -43,6 +43,10 @@ export default {
       type: Array,
       default: []
     },
+    countries:{
+      type: Array,
+      default: []
+    },
     value:{
       type: Object,
       default: {}
@@ -50,7 +54,11 @@ export default {
   },
   data(){
     return{
-      data: ''
+      data: {
+        amount: undefined,
+        CurrencyCodeFrom: '',
+        CurrencyCodeTo: ''
+      }
     }
   },
   methods: {
@@ -59,54 +67,59 @@ export default {
     }
   },
   computed:{
-    textInput:{
-      get(){
-        return this.value.amount
-      },
-      set(value){
-        const resultStr = {
-          amount: value,
-          CurrencyCodeFrom: this.value.CurrencyCodeFrom,
-          CurrencyCodeTo: this.value.CurrencyCodeTo,
-          countries: this.value.countries
-        }
-        this.$emit('input', resultStr)
-      }
-    },
-    CurrencyCodeFrom:{
-      get(){
-        return this.value.CurrencyCodeFrom
-      },
-      set(value){
-        const resultStr = {
-          amount: this.value.amount,
-          CurrencyCodeFrom: value,
-          CurrencyCodeTo: this.value.CurrencyCodeTo,
-          countries: this.value.countries
-        }
-        this.$emit('input', resultStr)
-      }
-    },
-    CurrencyCodeTo:{
-      get(){
-        return this.value.CurrencyCodeTo
-      },
-      set(value){
-        const resultStr = {
-          amount: this.value.amount,
-          CurrencyCodeFrom: this.value.CurrencyCodeFrom,
-          CurrencyCodeTo: value,
-          countries: this.value.countries
-        }
-        this.$emit('input', resultStr)
-      }
-    }
+    // amount:{
+    //   get(){
+    //     console.log('amount', this.value.amount)
+    //     return this.value.amount
+    //   },
+    //   set(value){
+    //     const resultStr = {
+    //       amount: value,
+    //       CurrencyCodeFrom: this.value.CurrencyCodeFrom,
+    //       CurrencyCodeTo: this.value.CurrencyCodeTo
+    //     }
+    //     this.$emit('input', resultStr)
+    //     console.log('textInput-resultStr', resultStr)
+    //   }
+    // },
+    // CurrencyCodeFrom:{
+    //   get(){
+    //     console.log('CurrencyCodeFrom', this.value.CurrencyCodeFrom)
+    //     return this.value.CurrencyCodeFrom
+    //   },
+    //   set(value){
+    //     const resultStr = {
+    //       amount: this.value.amount,
+    //       CurrencyCodeFrom: value,
+    //       CurrencyCodeTo: this.value.CurrencyCodeTo
+    //     }
+    //     this.$emit('input', resultStr)
+    //   }
+    // },
+    // CurrencyCodeTo:{
+    //   get(){
+    //     console.log('CurrencyCodeTo', this.value.CurrencyCodeTo)
+    //     return this.value.CurrencyCodeTo
+    //   },
+    //   set(value){
+    //     const resultStr = {
+    //       amount: this.value.amount,
+    //       CurrencyCodeFrom: this.value.CurrencyCodeFrom,
+    //       CurrencyCodeTo: value
+    //     }
+    //     this.$emit('input', resultStr)
+    //   }
+    // }
   },
-  watch:{
-    value(value){
-      this.data = this.value
-}
-  }
+  watch: {
+    value: {
+      handler: function() {
+        this.data = this.value
+      },
+      //при создании делает первый запрос
+      immediate: true
+    }
+},
 }
 </script>
 
