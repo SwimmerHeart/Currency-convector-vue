@@ -17,7 +17,9 @@ module.exports = {
         historyApiFallback: true,
         proxy: {
             '/sbr/api': {
-                target: 'https://www.cbr-xml-daily.ru',
+                // target: 'https://www.cbr-xml-daily.ru',
+                //исп.env переменной(указываем в .env)
+                target: process.env.API_CBR,
                 //проверка сертификатов
                 // secure: false,
                 // rejectUnauthorized: false,
